@@ -1,0 +1,13 @@
+<style type="text/css">
+.panel>.active{
+	display:block;
+}
+.tabp{
+	display:none;
+}
+</style>
+<tabset my-list="lists">
+<tab ng-repeat="list in lists">
+{{list.content}}
+</tab>
+</tabset>
