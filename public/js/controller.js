@@ -86,21 +86,31 @@
 		Imgs.getImgs().success(function(data){
 			$scope.data = data.imgs;
 		});
+		timer = null;bigtime=null
 		$scope.enter = function(num){
+			if(bigtime)clearTimeout(bigtime);
+			bigtime = setTimeout(function(){
 			var li = document.querySelectorAll('.li');
 			var div =li[num].querySelector('.front');
 			var end =li[num].querySelector('.end');
-			div.className='flip';
+			div.className='flip front';
+			if(timer) clearTimeout(timer);
 			timer = setTimeout(function(){
-			div.className='front'; div.style.display="none"; end.style.display="block"},500);
+			div.className='front'; div.style.display="none"; end.style.display="block"},400);
+			},200);
 		}
 		$scope.leave=function(num){
+			if(bigtime) clearTimeout(bigtime);
+			if(timer) clearTimeout(timer);
 			var li = document.querySelectorAll('.li');
 			var div =li[num].querySelector('.front');
+						div.className = 'front';
 			var end =li[num].querySelector('.end');
-			end.className='flip';
-			setTimeout(function(){
-			end.className='end'; end.style.display="none"; div.style.display="block"},500);
+			if(div.style.display=='none'){
+			end.className='flip end';
+			timer=setTimeout(function(){
+			end.className='end'; end.style.display="none"; div.style.display="block"},400);
+			}
 		}
 		
 	},
