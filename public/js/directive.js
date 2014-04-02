@@ -1,4 +1,4 @@
- define(function(require,exports,module){
+  define(function(require,exports,module){
 // tabs = angular.module('tabs',[]).directive('tabset',function(){
 	directive={};
 	directive.tabset=function(){
@@ -6,24 +6,20 @@
 			restrict : 'E',
 			transclude : true,
 			priority:100,
-            scope:{},
-			controller:function otherCtrl($scope){
-				var lists= $scope.lists = [] ;
-				this.addtab = function(list){
-				lists.push(list);
-				if(lists.length==1){
-					list.active = true;
-					}
-				}
-				this.select =function(selecttab){
-					angular.forEach(lists, function(list) {
-				     list.active = false;
-				
- 				   });
-				   selecttab.active =true;
-				};
-			},
-			template:'<div><ul ng-transclude  class="nav nav-tabs"></ul><div class="panel"><div class="tabp" tab-content-transclude="list" ng-repeat="list in lists" ng-class="{active:list.active}">{{list.list.content}}</div></div></div>',
+            scope:{lists:'=myList'},	
+            controller:function otherCtrl($scope){
+            	var lists = $scope.lists;
+            	angular.forEach(lists,function(list,i){
+            		if(i==0)list.active= true;
+            	});
+            	this.select=function(scope){
+	            	angular.forEach(lists, function(list) {
+	           			 list.active = false;
+	          		});
+            		scope.list.active =true;
+            	}
+            },
+			template:'<div><ul ng-transclude  class="nav nav-tabs"></ul><div class="panel"><div class="tabp"  ng-repeat="list in lists" ng-class="{active:list.active}">{{list.content}}</div></div></div>',
 			replace:true
 			
 		}
@@ -34,20 +30,13 @@
 			restrict : 'E',
 			replace:true,
 			transclude : true,
-			template:'<li ng-class="{active:active}" ng-click="select()"><a href="javascript:;">{{list.title}}</a></li>',
+			template:'<li ng-class="{active:list.active}" ng-click="select()"><a href="javascript:;">{{list.title}}</a></li>',
 			compile: function(elm, attrs, transclude) {
                   return function postLink(scope, elm, attrs, otherCtrl) {
-					otherCtrl.addtab(scope);
-					scope.$watch('active',function(active){
-						if(active){
-							otherCtrl.select(scope);
-						}
-					});
 					scope.select=function(){
-						scope.active=true;
+						otherCtrl.select(scope)
 					}
-				  }
-				 
+				  } 
 			}
 		}
 	};
