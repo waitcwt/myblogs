@@ -19,9 +19,8 @@
             		scope.list.active =true;
             	}
             },
-			template:'<div><ul ng-transclude  class="nav nav-tabs"></ul><div class="panel"><div class="tabp"  ng-repeat="list in lists" ng-class="{active:list.active}">{{list.content}}</div></div></div>',
+			template:'<div><ul ng-transclude  class="nav nav-tabs" style="display:inline-block"></ul><div class="panel"><div class="tabp"  ng-repeat="list in lists" ng-class="{active:list.active}"></div></div></div>',
 			replace:true
-			
 		}
 	}
 	directive.tab=function(){
@@ -36,6 +35,10 @@
 					scope.select=function(){
 						otherCtrl.select(scope)
 					}
+					var tabps = document.querySelectorAll('.tabp');
+					angular.forEach(tabps,function(tab,i){
+						angular.element(tab).html(scope.lists[i]['content']);
+					});
 				  } 
 			}
 		}

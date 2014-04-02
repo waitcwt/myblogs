@@ -5,9 +5,14 @@
 .tabp{
 	display:none;
 }
+ul>li{
+	margin-left:30px;
+}
+.tabp p{
+	width:380px;
+}
 </style>
-<tabset my-list="lists">
+<tabset  my-list="lists">
 <tab ng-repeat="list in lists">
-{{list.content}}
 </tab>
 </tabset>
